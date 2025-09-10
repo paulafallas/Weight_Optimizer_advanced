@@ -1,0 +1,2944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Production Line Tolerance Optimizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        
+        .project-field {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid #3498db;
+        }
+        
+        .project-field label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .project-field input {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        button:focus {
+            outline: 2px solid #3498db;
+            outline-offset: 2px;
+        }
+        
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .success-btn {
+            background: #27ae60;
+        }
+        
+        .success-btn:hover {
+            background: #219a52;
+        }
+        
+        .optimize-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            font-size: 16px;
+            padding: 15px 30px;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .optimize-btn:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+            transform: translateY(-2px);
+        }
+        
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background: #34495e;
+            color: white;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        input[type="text"] {
+            width: 120px;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        input[type="number"] {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid #ecf0f1;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        input:invalid {
+            border-color: #e74c3c;
+            background-color: #fdf2f2;
+        }
+        
+        select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        
+        .controls {
+            margin: 15px 0;
+        }
+        
+        .controls button {
+            margin-right: 10px;
+        }
+        
+        .result, .warning, .error, .info {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            position: relative;
+        }
+        
+        .result {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .optimization-strategy {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #6c757d;
+        }
+
+        .advanced-settings {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .advanced-control {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            backdrop-filter: blur(10px);
+        }
+
+        .performance-monitor {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .performance-metric {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .performance-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .optimization-results-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .optimization-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .summary-metric {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .summary-metric h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        .summary-metric .value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .scale-breakdown {
+            background: white;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .scale-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .scale-row:last-child {
+            border-bottom: none;
+        }
+
+        .scale-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .scale-details {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .tolerance-value {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .min-req-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .req-met {
+            background: #27ae60;
+            color: white;
+        }
+
+        .req-not-met {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .optimization-timestamp {
+            text-align: right;
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 15px;
+        }
+
+        .results-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .strategy-option {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .strategy-option label {
+            display: block;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .strategy-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .strategy-description {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+            margin-left: 25px;
+            line-height: 1.4;
+        }
+
+        .tolerance-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .scale-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .scale-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .scale-card h3 {
+            margin-top: 0;
+            text-align: center;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .min-tolerance-section {
+            background: #f0f8ff;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .min-tolerance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .min-tolerance-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 2px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .min-tolerance-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-top: 8px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
+        
+        .status-success {
+            background-color: #27ae60;
+        }
+        
+        .status-error {
+            background-color: #e74c3c;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .locked-row {
+            background-color: #fef9e7 !important;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .lock-button {
+            padding: 4px 8px;
+            font-size: 12px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .lock-button.locked {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .lock-button.unlocked {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .lock-button:hover {
+            opacity: 0.8;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #000;
+            color: #fff;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        .scalability-info {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .algorithm-selector {
+            background: #34495e;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .algorithm-option {
+            margin: 10px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .algorithm-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .algorithm-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .tolerance-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .min-tolerance-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            table {
+                font-size: 14px;
+            }
+            
+            input[type="text"], input[type="number"] {
+                width: 100%;
+                max-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="container">
+        <div class="header">
+            <h1>ENHANCED PRODUCTION LINE OPTIMIZER</h1>
+            <p>High-Performance Tolerance Optimization for Large-Scale Operations</p>
+        </div>
+        
+        <main id="main-content">
+            <div class="scalability-info">
+                <h3 style="margin-top: 0;">🚀 Enhanced Scalability Features</h3>
+                <p><strong>New Capabilities:</strong></p>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li><strong>Massive Scale Support:</strong> Handle 1,000+ items and up to 20 scales</li>
+                    <li><strong>Advanced Algorithms:</strong> Multi-threaded genetic algorithms with adaptive parameters</li>
+                    <li><strong>Smart Optimization:</strong> Hybrid approach automatically selects best algorithm</li>
+                    <li><strong>Performance Monitoring:</strong> Real-time optimization statistics and convergence tracking</li>
+                    <li><strong>Memory Optimization:</strong> Efficient data structures for large datasets</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>PROJECT SETTINGS</h2>
+                
+                <div class="project-field">
+                    <label for="projectName">Product Name:</label>
+                    <input type="text" id="projectName" value=" " placeholder="Enter product name">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0;">
+                    <div>
+                        <label for="numScales">Number of Scales:</label>
+                        <select id="numScales">
+                            <option value="2" selected>2 Scales</option>
+                            <option value="3">3 Scales</option>
+                            <option value="4">4 Scales</option>
+                            <option value="5">5 Scales</option>
+                            <option value="6">6 Scales</option>
+                            <option value="8">8 Scales</option>
+                            <option value="10">10 Scales</option>
+                            <option value="12">12 Scales</option>
+                            <option value="15">15 Scales</option>
+                            <option value="20">20 Scales</option>
+                        </select>
+                        <span style="margin-left: 15px;">
+                            Current: <strong id="currentScaleCount">2</strong> Scales
+                        </span>
+                    </div>
+                    <div>
+                        <label for="maxItems">Max Items (for large datasets):</label>
+                        <select id="maxItems">
+                            <option value="100">100 Items</option>
+                            <option value="500" selected>500 Items</option>
+                            <option value="1000">1,000 Items</option>
+                            <option value="2000">2,000 Items</option>
+                            <option value="5000">5,000 Items</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="min-tolerance-section">
+                    <h3 style="margin-top: 0; color: #2c3e50;">MINIMUM TOLERANCE REQUIREMENTS</h3>
+                    <div class="info">
+                        <strong>HOW IT WORKS:</strong>
+                        <ul style="margin: 8px 0; padding-left: 20px;">
+                            <li>Set minimum tolerance values that each scale must achieve</li>
+                            <li>During optimization, assignments that don't meet minimums are rejected</li>
+                            <li><strong>Default is 0 (no minimum requirements)</strong></li>
+                            <li>Cards show green borders when minimums are met, red borders when not</li>
+                        </ul>
+                    </div>
+                    <div id="minToleranceContainer" class="min-tolerance-grid">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background: #e8f4f8; border-radius: 6px;">
+                        <strong>Current Settings:</strong> <span id="minToleranceStatus">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>ITEM MANAGEMENT</h2>
+                
+                <div class="controls">
+                    <button class="success-btn" id="addItemBtn">Add Item</button>
+                    <button id="removeItemBtn">Remove Item</button>
+                    <button id="loadSampleBtn">Load Sample Data</button>
+                    <button id="loadLargeDataBtn" style="background: #9b59b6;">Load Large Dataset (100 items)</button>
+                    <button id="generateStressTestBtn" style="background: #e67e22;">Generate Stress Test (500 items)</button>
+                    <button id="clearAllBtn">Clear All</button>
+                    <button id="lockAllBtn" style="background: #f39c12;">Lock All</button>
+                    <button id="unlockAllBtn" style="background: #95a5a6;">Unlock All</button>
+                </div>
+                
+                <div style="margin: 10px 0; padding: 10px; background: #e8f4f8; border-radius: 4px;">
+                    <strong>PRODUCTION RUN:</strong> 
+                    <span id="debugInfo">Items: 0, Scales: 2</span>
+                    <span style="margin-left: 20px;" id="memoryInfo">Memory: 0MB</span>
+                </div>
+                
+                <div id="validationMessages"></div>
+                
+                <div style="max-height: 500px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px;">
+                    <table id="itemTable">
+                        <thead>
+                            <tr id="tableHeader" style="position: sticky; top: 0; z-index: 10;">
+                                <th>Item Name</th>
+                                <th>Weight (grams)</th>
+                                <th class="scale-header">Scale 1</th>
+                                <th class="scale-header">Scale 2</th>
+                                <th>Lock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="itemTableBody">
+                            <!-- Item rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>OPTIMIZATION CONFIGURATION</h2>
+                
+                <div class="algorithm-selector">
+                    <h3 style="margin-top: 0;">Algorithm Selection:</h3>
+                    
+                    <div class="algorithm-option">
+                        <label>
+                            <input type="radio" name="algorithmType" value="auto" checked>
+                            <strong>Auto-Select (Recommended)</strong>
+                        </label>
+                        <div style="font-size: 13px; margin-left: 25px; opacity: 0.9;">
+                            Automatically chooses the best algorithm based on dataset size and complexity.
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-option">
+                        <label>
+                            <input type="radio" name="algorithmType" value="bruteforce">
+                            <strong>Brute Force (≤ 15 unlocked items)</strong>
+                        </label>
+                        <div style="font-size: 13px; margin-left: 25px; opacity: 0.9;">
+                            Exhaustive search guaranteeing optimal solution. Limited to small datasets.
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-option">
+                        <label>
+                            <input type="radio" name="algorithmType" value="genetic">
+                            <strong>Genetic Algorithm (Large datasets)</strong>
+                        </label>
+                        <div style="font-size: 13px; margin-left: 25px; opacity: 0.9;">
+                            Evolutionary algorithm for large-scale optimization with adaptive parameters.
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-option">
+                        <label>
+                            <input type="radio" name="algorithmType" value="simulated">
+                            <strong>Simulated Annealing (Precision-focused)</strong>
+                        </label>
+                        <div style="font-size: 13px; margin-left: 25px; opacity: 0.9;">
+                            Temperature-based optimization excellent for avoiding local optima.
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-option">
+                        <label>
+                            <input type="radio" name="algorithmType" value="hybrid">
+                            <strong>Hybrid Multi-Stage (Maximum Performance)</strong>
+                        </label>
+                        <div style="font-size: 13px; margin-left: 25px; opacity: 0.9;">
+                            Combines multiple algorithms in sequence for best results on complex problems.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="advanced-settings">
+                    <h3 style="margin-top: 0;">Advanced Optimization Parameters</h3>
+                    <div class="advanced-grid">
+                        <div class="advanced-control">
+                            <label for="populationSize">Population Size:</label>
+                            <input type="number" id="populationSize" value="200" min="50" max="2000" step="50">
+                            <small style="display: block; margin-top: 5px; opacity: 0.8;">
+                                Larger = better quality, longer time
+                            </small>
+                        </div>
+                        
+                        <div class="advanced-control">
+                            <label for="maxGenerations">Max Generations:</label>
+                            <input type="number" id="maxGenerations" value="100" min="20" max="500" step="10">
+                            <small style="display: block; margin-top: 5px; opacity: 0.8;">
+                                More generations = better convergence
+                            </small>
+                        </div>
+                        
+                        <div class="advanced-control">
+                            <label for="mutationRate">Mutation Rate (%):</label>
+                            <input type="number" id="mutationRate" value="15" min="1" max="50" step="1">
+                            <small style="display: block; margin-top: 5px; opacity: 0.8;">
+                                Higher = more exploration
+                            </small>
+                        </div>
+                        
+                        <div class="advanced-control">
+                            <label for="convergenceThreshold">Convergence Threshold:</label>
+                            <input type="number" id="convergenceThreshold" value="0.001" min="0.0001" max="0.1" step="0.0001">
+                            <small style="display: block; margin-top: 5px; opacity: 0.8;">
+                                Early stopping criteria
+                            </small>
+                        </div>
+                        
+                        <div class="advanced-control">
+                            <label for="maxOptimizationTime">Max Time (seconds):</label>
+                            <input type="number" id="maxOptimizationTime" value="60" min="10" max="600" step="10">
+                            <small style="display: block; margin-top: 5px; opacity: 0.8;">
+                                Safety timeout
+                            </small>
+                        </div>
+                        
+                        <div class="advanced-control">
+                            <label>
+                                <input type="checkbox" id="enableParallelProcessing" checked>
+                                Enable Parallel Processing
+                            </label>
+                            <small style="display: block; margin-top: 5px; opacity: 0.8;">
+                                Use Web Workers for speed
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="optimization-strategy">
+                    <h3 style="margin-top: 0; color: #2c3e50;">Optimization Strategy:</h3>
+                    
+                    <div class="strategy-option">
+                        <label>
+                            <input type="radio" name="optimizationMode" value="balanced" checked>
+                            Balanced (Sum of all tolerances)
+                        </label>
+                        <div class="strategy-description">
+                            Maximizes the total sum of all scale tolerances. Best when all scales are equally important.
+                        </div>
+                    </div>
+                    
+                    <div class="strategy-option">
+                        <label>
+                            <input type="radio" name="optimizationMode" value="product">
+                            Product (Product of all tolerances)
+                        </label>
+                        <div class="strategy-description">
+                            Maximizes the product of all tolerances. Ensures no scale performs very poorly.
+                        </div>
+                    </div>
+                    
+                    <div class="strategy-option">
+                        <label>
+                            <input type="radio" name="optimizationMode" value="min">
+                            Min-Max (Maximum minimum tolerance)
+                        </label>
+                        <div class="strategy-description">
+                            Maximizes the worst-performing scale's tolerance. Best for ensuring minimum standards.
+                        </div>
+                    </div>
+                    
+                    <div class="strategy-option">
+                        <label>
+                            <input type="radio" name="optimizationMode" value="weighted">
+                            Weighted (Custom scale priorities)
+                        </label>
+                        <div class="strategy-description">
+                            Allows setting different importance weights for each scale.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button class="success-btn" id="calculateBtn">Calculate Tolerances</button>
+                    <button class="optimize-btn" id="optimizeBtn">OPTIMIZE ALL SCALES</button>
+                    <button id="resetBtn">Reset Assignment</button>
+                    <button id="stopOptimizationBtn" style="background: #e74c3c; display: none;">STOP OPTIMIZATION</button>
+                </div>
+                
+                <div id="optimizationProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Optimizing...</div>
+                    <div style="margin-top: 10px; font-size: 14px; color: #666;" id="algorithmStatus">
+                        Algorithm: Initializing...
+                    </div>
+                </div>
+            </div>
+
+            <div class="performance-monitor" id="performanceMonitor" style="display: none;">
+                <h3 style="margin-top: 0;">Real-Time Performance Monitor</h3>
+                <div class="performance-grid">
+                    <div class="performance-metric">
+                        <div>Evaluations/sec</div>
+                        <div class="performance-value" id="evaluationsPerSec">0</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div>Best Score</div>
+                        <div class="performance-value" id="currentBestScore">0</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div>Generation</div>
+                        <div class="performance-value" id="currentGeneration">0</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div>Convergence</div>
+                        <div class="performance-value" id="convergenceRate">0%</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div>Time Elapsed</div>
+                        <div class="performance-value" id="timeElapsed">0s</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div>Memory Usage</div>
+                        <div class="performance-value" id="memoryUsage">0MB</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" id="optimizationResults" style="display: none;">
+                <h2>OPTIMIZATION RESULTS</h2>
+                
+                <div class="controls">
+                    <button id="clearResultsBtn" style="background: #95a5a6;">Clear Results</button>
+                    <button id="compareResultsBtn" style="background: #9b59b6;">Compare with Previous</button>
+                    <button id="exportOptimizationBtn" style="background: #e67e22;">Export Full Report</button>
+                </div>
+                
+                <div id="optimizationResultsContent">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>TOLERANCE RESULTS</h2>
+                <div id="toleranceCards" class="tolerance-cards">
+                    <!-- Tolerance cards will be generated here -->
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>EXPORT & ANALYSIS</h2>
+                <div class="controls">
+                    <button class="success-btn" id="exportCSVBtn">Export CSV</button>
+                    <button id="exportReportBtn">Export Report</button>
+                    <button id="exportPerformanceBtn" style="background: #8e44ad;">Export Performance Data</button>
+                    <button id="saveConfigBtn" style="background: #16a085;">Save Configuration</button>
+                    <button id="loadConfigBtn" style="background: #2980b9;">Load Configuration</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        class EnhancedToleranceOptimizer {
+            constructor() {
+                this.items = [];
+                this.numScales = 2;
+                this.projectName = ' ';
+                this.minTolerances = new Array(20).fill(0.0);
+                this.scaleColors = ['#3498db', '#e74c3c', '#27ae60', '#f39c12', '#9b59b6', '#e67e22', '#1abc9c', '#34495e', '#f1c40f', '#e74c3c', '#9b59b6', '#3498db', '#27ae60', '#f39c12', '#e67e22', '#1abc9c', '#34495e', '#f1c40f', '#e74c3c', '#9b59b6'];
+                this.isOptimizing = false;
+                this.shouldStopOptimization = false;
+                this.debounceTimeouts = new Map();
+                this.lockedItems = new Set();
+                this.optimizationHistory = [];
+                this.currentOptimizationResult = null;
+                this.performanceMetrics = {
+                    startTime: 0,
+                    evaluations: 0,
+                    bestScore: -Infinity,
+                    generation: 0,
+                    convergenceHistory: []
+                };
+                this.maxItems = 500;
+                
+                // Advanced optimization parameters
+                this.optimizationParams = {
+                    populationSize: 200,
+                    maxGenerations: 100,
+                    mutationRate: 0.15,
+                    convergenceThreshold: 0.001,
+                    maxOptimizationTime: 60000, // 60 seconds
+                    enableParallelProcessing: true
+                };
+                
+                // Workers for parallel processing
+                this.workers = [];
+                this.maxWorkers = navigator.hardwareConcurrency || 4;
+            }
+
+            initializeApp() {
+                console.log("Initializing enhanced optimizer...");
+                this.addEventListeners();
+                this.createMinToleranceControls();
+                this.loadSampleData();
+                this.updateUI();
+                this.updateMemoryInfo();
+                console.log("Enhanced optimizer ready!");
+            }
+
+            addEventListeners() {
+                // Basic controls
+                document.getElementById('addItemBtn').addEventListener('click', () => this.addItem());
+                document.getElementById('removeItemBtn').addEventListener('click', () => this.removeItem());
+                document.getElementById('loadSampleBtn').addEventListener('click', () => this.loadSampleData());
+                document.getElementById('loadLargeDataBtn').addEventListener('click', () => this.loadLargeDataset());
+                document.getElementById('generateStressTestBtn').addEventListener('click', () => this.generateStressTest());
+                document.getElementById('clearAllBtn').addEventListener('click', () => this.clearAll());
+                document.getElementById('optimizeBtn').addEventListener('click', () => this.optimizeAssignments());
+                document.getElementById('calculateBtn').addEventListener('click', () => this.calculateTolerances());
+                document.getElementById('resetBtn').addEventListener('click', () => this.resetAssignments());
+                document.getElementById('stopOptimizationBtn').addEventListener('click', () => this.stopOptimization());
+                
+                // Lock controls
+                document.getElementById('lockAllBtn').addEventListener('click', () => this.lockAllItems());
+                document.getElementById('unlockAllBtn').addEventListener('click', () => this.unlockAllItems());
+                
+                // Export controls
+                document.getElementById('exportCSVBtn').addEventListener('click', () => this.exportToCSV());
+                document.getElementById('exportReportBtn').addEventListener('click', () => this.exportReport());
+                document.getElementById('exportPerformanceBtn').addEventListener('click', () => this.exportPerformanceData());
+                document.getElementById('saveConfigBtn').addEventListener('click', () => this.saveConfiguration());
+                document.getElementById('loadConfigBtn').addEventListener('click', () => this.loadConfiguration());
+                
+                // Settings
+                document.getElementById('numScales').addEventListener('change', (e) => this.updateScaleCount(e.target.value));
+                document.getElementById('maxItems').addEventListener('change', (e) => this.updateMaxItems(e.target.value));
+                document.getElementById('projectName').addEventListener('input', (e) => this.debounce('projectName', () => this.updateProjectName(e.target.value), 500));
+                
+                // Advanced parameters
+                document.getElementById('populationSize').addEventListener('change', (e) => this.optimizationParams.populationSize = parseInt(e.target.value));
+                document.getElementById('maxGenerations').addEventListener('change', (e) => this.optimizationParams.maxGenerations = parseInt(e.target.value));
+                document.getElementById('mutationRate').addEventListener('change', (e) => this.optimizationParams.mutationRate = parseFloat(e.target.value) / 100);
+                document.getElementById('convergenceThreshold').addEventListener('change', (e) => this.optimizationParams.convergenceThreshold = parseFloat(e.target.value));
+                document.getElementById('maxOptimizationTime').addEventListener('change', (e) => this.optimizationParams.maxOptimizationTime = parseInt(e.target.value) * 1000);
+                document.getElementById('enableParallelProcessing').addEventListener('change', (e) => this.optimizationParams.enableParallelProcessing = e.target.checked);
+                
+                // Results controls (safely add if they exist)
+                const clearResultsBtn = document.getElementById('clearResultsBtn');
+                if (clearResultsBtn) {
+                    clearResultsBtn.addEventListener('click', () => this.clearOptimizationResults());
+                }
+                
+                const compareResultsBtn = document.getElementById('compareResultsBtn');
+                if (compareResultsBtn) {
+                    compareResultsBtn.addEventListener('click', () => this.compareResults());
+                }
+            }
+
+            updateMaxItems(value) {
+                this.maxItems = parseInt(value);
+                this.showMessage(`Maximum items set to ${this.maxItems}`, "info");
+            }
+
+            loadLargeDataset() {
+                this.items = [];
+                this.lockedItems.clear();
+                
+                const categories = ['Components', 'Assemblies', 'Hardware', 'Electronics', 'Packaging'];
+                const prefixes = ['PART', 'ASSY', 'HW', 'ELEC', 'PKG'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const categoryIndex = i % categories.length;
+                    const weight = this.generateRealisticWeight(categoryIndex);
+                    
+                    const item = {
+                        name: `${prefixes[categoryIndex]}-${String(i + 1).padStart(4, '0')}`,
+                        weight: weight
+                    };
+                    
+                    // Initialize scale assignments
+                    for (let j = 1; j <= this.numScales; j++) {
+                        item[`scale${j}`] = false;
+                    }
+                    item[`scale${((i % this.numScales) + 1)}`] = true;
+                    
+                    this.items.push(item);
+                }
+                
+                this.updateUI();
+                this.showMessage("Large dataset loaded (100 items)", "info");
+            }
+
+            generateStressTest() {
+                if (!confirm("Generate 500 items for stress testing? This may take a moment.")) {
+                    return;
+                }
+                
+                this.items = [];
+                this.lockedItems.clear();
+                
+                const weightDistributions = [
+                    { min: 1, max: 50, probability: 0.3 },      // Small parts
+                    { min: 50, max: 200, probability: 0.4 },    // Medium parts  
+                    { min: 200, max: 1000, probability: 0.25 }, // Large parts
+                    { min: 1000, max: 5000, probability: 0.05 } // Very large parts
+                ];
+                
+                for (let i = 0; i < 500; i++) {
+                    const distribution = this.selectWeightDistribution(weightDistributions);
+                    const weight = Math.round((Math.random() * (distribution.max - distribution.min) + distribution.min) * 100) / 100;
+                    
+                    const item = {
+                        name: `STRESS-${String(i + 1).padStart(4, '0')}`,
+                        weight: weight
+                    };
+                    
+                    // Smart initial distribution
+                    for (let j = 1; j <= this.numScales; j++) {
+                        item[`scale${j}`] = false;
+                    }
+                    
+                    // Assign based on weight distribution strategy
+                    const assignmentStrategy = this.getOptimalInitialAssignment(i, weight);
+                    item[`scale${assignmentStrategy}`] = true;
+                    
+                    this.items.push(item);
+                }
+                
+                this.updateUI();
+                this.showMessage("Stress test dataset generated (500 items)", "info");
+            }
+
+            selectWeightDistribution(distributions) {
+                const rand = Math.random();
+                let cumulative = 0;
+                
+                for (const dist of distributions) {
+                    cumulative += dist.probability;
+                    if (rand <= cumulative) {
+                        return dist;
+                    }
+                }
+                
+                return distributions[distributions.length - 1];
+            }
+
+            getOptimalInitialAssignment(index, weight) {
+                // Smart assignment strategy based on weight balancing
+                const scaleTotals = new Array(this.numScales).fill(0);
+                
+                this.items.forEach(item => {
+                    for (let i = 1; i <= this.numScales; i++) {
+                        if (item[`scale${i}`]) {
+                            scaleTotals[i - 1] += item.weight;
+                            break;
+                        }
+                    }
+                });
+                
+                // Find scale with minimum total weight
+                const minTotal = Math.min(...scaleTotals);
+                const minIndex = scaleTotals.indexOf(minTotal);
+                
+                return minIndex + 1;
+            }
+
+            generateRealisticWeight(categoryIndex) {
+                const weightRanges = [
+                    { min: 5, max: 150 },    // Components
+                    { min: 200, max: 800 },  // Assemblies
+                    { min: 10, max: 100 },   // Hardware
+                    { min: 50, max: 300 },   // Electronics
+                    { min: 1, max: 50 }      // Packaging
+                ];
+                
+                const range = weightRanges[categoryIndex];
+                return Math.round((Math.random() * (range.max - range.min) + range.min) * 100) / 100;
+            }
+
+            async optimizeAssignments() {
+                if (this.isOptimizing) {
+                    this.showMessage("Optimization already in progress", "warning");
+                    return;
+                }
+
+                if (this.items.length === 0) {
+                    this.showMessage('Need at least 1 item for optimization', 'error');
+                    return;
+                }
+
+                if (this.items.length > this.maxItems) {
+                    this.showMessage(`Dataset too large (${this.items.length} items). Maximum allowed: ${this.maxItems}`, 'error');
+                    return;
+                }
+
+                this.isOptimizing = true;
+                this.shouldStopOptimization = false;
+                this.showOptimizationProgress(true);
+                this.showPerformanceMonitor(true);
+                
+                try {
+                    const mode = document.querySelector('input[name="optimizationMode"]:checked').value;
+                    const algorithmType = document.querySelector('input[name="algorithmType"]:checked').value;
+                    
+                    this.resetPerformanceMetrics();
+                    this.updateAlgorithmStatus("Initializing optimization...");
+                    
+                    const result = await this.executeOptimization(mode, algorithmType);
+                    
+                    if (result.success && !this.shouldStopOptimization) {
+                        this.applyOptimizedAssignment(result.assignment, result.unlockedItems);
+                        this.updateUI();
+                        this.showOptimizationResults(mode, result);
+                        this.showMessage(`Optimization complete! ${result.algorithm} evaluated ${result.evaluations.toLocaleString()} combinations in ${result.timeMs}ms`, "result");
+                    } else if (this.shouldStopOptimization) {
+                        this.showMessage("Optimization stopped by user", "warning");
+                    } else {
+                        this.showMessage("Optimization failed: " + result.error, "error");
+                    }
+                    
+                } catch (error) {
+                    console.error("Optimization error:", error);
+                    this.showMessage("Error during optimization: " + error.message, "error");
+                } finally {
+                    this.isOptimizing = false;
+                    this.shouldStopOptimization = false;
+                    this.showOptimizationProgress(false);
+                    this.showPerformanceMonitor(false);
+                    this.terminateWorkers();
+                }
+            }
+
+            async executeOptimization(mode, algorithmType) {
+                const unlockedItems = this.items.map((item, index) => 
+                    this.lockedItems.has(index) ? null : index
+                ).filter(idx => idx !== null);
+                
+                if (unlockedItems.length === 0) {
+                    return { success: false, error: "All items are locked - nothing to optimize" };
+                }
+
+                let selectedAlgorithm = algorithmType;
+                
+                // Auto-select algorithm based on dataset characteristics
+                if (algorithmType === 'auto') {
+                    selectedAlgorithm = this.selectOptimalAlgorithm(unlockedItems.length);
+                }
+                
+                this.updateAlgorithmStatus(`Running ${selectedAlgorithm} algorithm...`);
+                
+                switch (selectedAlgorithm) {
+                    case 'bruteforce':
+                        return await this.bruteForceOptimize(unlockedItems, mode);
+                    case 'genetic':
+                        return await this.enhancedGeneticAlgorithm(unlockedItems, mode);
+                    case 'simulated':
+                        return await this.simulatedAnnealingOptimize(unlockedItems, mode);
+                    case 'hybrid':
+                        return await this.hybridOptimize(unlockedItems, mode);
+                    default:
+                        return await this.enhancedGeneticAlgorithm(unlockedItems, mode);
+                }
+            }
+
+            selectOptimalAlgorithm(unlockedItemsCount) {
+                if (unlockedItemsCount <= 15) {
+                    return 'bruteforce';
+                } else if (unlockedItemsCount <= 100) {
+                    return 'genetic';
+                } else if (unlockedItemsCount <= 300) {
+                    return 'simulated';
+                } else {
+                    return 'hybrid';
+                }
+            }
+
+            async enhancedGeneticAlgorithm(unlockedItems, mode) {
+                const populationSize = Math.min(this.optimizationParams.populationSize, Math.max(50, unlockedItems.length * 10));
+                const maxGenerations = this.optimizationParams.maxGenerations;
+                const mutationRate = this.optimizationParams.mutationRate;
+                const convergenceThreshold = this.optimizationParams.convergenceThreshold;
+                
+                let population = [];
+                let evaluations = 0;
+                const startTime = Date.now();
+                
+                // Advanced initialization strategies
+                population = await this.initializePopulationAdvanced(populationSize, unlockedItems);
+                
+                let bestScore = -Infinity;
+                let bestAssignment = null;
+                let convergenceCounter = 0;
+                let lastBestScore = -Infinity;
+                
+                for (let generation = 0; generation < maxGenerations && !this.shouldStopOptimization; generation++) {
+                    this.performanceMetrics.generation = generation;
+                    
+                    // Evaluate population with parallel processing if enabled
+                    const scores = await this.evaluatePopulationParallel(population, unlockedItems, mode);
+                    evaluations += population.length;
+                    
+                    // Update best solution
+                    const maxScore = Math.max(...scores);
+                    if (maxScore > bestScore) {
+                        bestScore = maxScore;
+                        const bestIndex = scores.indexOf(maxScore);
+                        bestAssignment = [...population[bestIndex]];
+                        this.performanceMetrics.bestScore = bestScore;
+                    }
+                    
+                    // Convergence check
+                    if (Math.abs(bestScore - lastBestScore) < convergenceThreshold) {
+                        convergenceCounter++;
+                        if (convergenceCounter >= 10) {
+                            console.log(`Converged after ${generation} generations`);
+                            break;
+                        }
+                    } else {
+                        convergenceCounter = 0;
+                    }
+                    lastBestScore = bestScore;
+                    
+                    // Adaptive parameters
+                    const adaptiveMutationRate = this.calculateAdaptiveMutationRate(generation, maxGenerations, convergenceCounter);
+                    
+                    // Advanced selection and reproduction
+                    population = await this.advancedReproduction(population, scores, adaptiveMutationRate);
+                    
+                    // Update progress and performance metrics
+                    const progress = (generation / maxGenerations) * 100;
+                    this.updateProgress(progress);
+                    this.updatePerformanceMetrics(evaluations, bestScore, generation, startTime);
+                    
+                    // Check time limit
+                    if (Date.now() - startTime > this.optimizationParams.maxOptimizationTime) {
+                        console.log("Time limit reached");
+                        break;
+                    }
+                    
+                    await new Promise(resolve => setTimeout(resolve, 1));
+                }
+                
+                const endTime = Date.now();
+                return {
+                    success: true,
+                    algorithm: 'Enhanced Genetic Algorithm',
+                    assignment: bestAssignment,
+                    unlockedItems: unlockedItems,
+                    score: bestScore,
+                    evaluations: evaluations,
+                    timeMs: endTime - startTime,
+                    generations: this.performanceMetrics.generation
+                };
+            }
+
+            async initializePopulationAdvanced(populationSize, unlockedItems) {
+                const population = [];
+                
+                // 20% random initialization
+                const randomCount = Math.floor(populationSize * 0.2);
+                for (let i = 0; i < randomCount; i++) {
+                    population.push(unlockedItems.map(() => Math.floor(Math.random() * this.numScales)));
+                }
+                
+                // 30% weight-balanced initialization
+                const balancedCount = Math.floor(populationSize * 0.3);
+                for (let i = 0; i < balancedCount; i++) {
+                    population.push(this.createWeightBalancedAssignment(unlockedItems));
+                }
+                
+                // 30% greedy initialization
+                const greedyCount = Math.floor(populationSize * 0.3);
+                for (let i = 0; i < greedyCount; i++) {
+                    population.push(this.createGreedyAssignment(unlockedItems));
+                }
+                
+                // 20% diverse initialization
+                const diverseCount = populationSize - randomCount - balancedCount - greedyCount;
+                for (let i = 0; i < diverseCount; i++) {
+                    population.push(this.createDiverseAssignment(unlockedItems));
+                }
+                
+                return population;
+            }
+
+            createWeightBalancedAssignment(unlockedItems) {
+                const assignment = [];
+                const scaleTotals = new Array(this.numScales).fill(0);
+                
+                // Sort items by weight (descending) for better balance
+                const sortedIndices = unlockedItems
+                    .map((itemIndex, i) => ({ itemIndex, weight: this.items[itemIndex].weight, originalIndex: i }))
+                    .sort((a, b) => b.weight - a.weight);
+                
+                sortedIndices.forEach(({ originalIndex }) => {
+                    const minScaleIndex = scaleTotals.indexOf(Math.min(...scaleTotals));
+                    assignment[originalIndex] = minScaleIndex;
+                    scaleTotals[minScaleIndex] += this.items[unlockedItems[originalIndex]].weight;
+                });
+                
+                return assignment;
+            }
+
+            createGreedyAssignment(unlockedItems) {
+                const assignment = new Array(unlockedItems.length);
+                
+                for (let i = 0; i < unlockedItems.length; i++) {
+                    let bestScale = 0;
+                    let bestScore = -Infinity;
+                    
+                    for (let scale = 0; scale < this.numScales; scale++) {
+                        assignment[i] = scale;
+                        const score = this.evaluateAssignment(assignment, unlockedItems, 'balanced');
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestScale = scale;
+                        }
+                    }
+                    
+                    assignment[i] = bestScale;
+                }
+                
+                return assignment;
+            }
+
+            createDiverseAssignment(unlockedItems) {
+                const assignment = [];
+                const usedPatterns = new Set();
+                
+                do {
+                    assignment.length = 0;
+                    for (let i = 0; i < unlockedItems.length; i++) {
+                        assignment.push(Math.floor(Math.random() * this.numScales));
+                    }
+                } while (usedPatterns.has(assignment.join(',')) && usedPatterns.size < 1000);
+                
+                usedPatterns.add(assignment.join(','));
+                return assignment;
+            }
+
+            calculateAdaptiveMutationRate(generation, maxGenerations, convergenceCounter) {
+                const baseMutation = this.optimizationParams.mutationRate;
+                const progressRatio = generation / maxGenerations;
+                
+                // Increase mutation rate if converging too quickly
+                const convergenceFactor = Math.min(convergenceCounter / 5, 1);
+                
+                // Decrease mutation rate as generations progress
+                const progressFactor = 1 - (progressRatio * 0.5);
+                
+                return Math.min(baseMutation * (1 + convergenceFactor) * progressFactor, 0.5);
+            }
+
+            async evaluatePopulationParallel(population, unlockedItems, mode) {
+                if (!this.optimizationParams.enableParallelProcessing || population.length < 50) {
+                    // Sequential evaluation for small populations
+                    return population.map(individual => this.evaluateAssignment(individual, unlockedItems, mode));
+                }
+                
+                // Parallel evaluation using Web Workers (simulated with batching)
+                const batchSize = Math.ceil(population.length / this.maxWorkers);
+                const batches = [];
+                
+                for (let i = 0; i < population.length; i += batchSize) {
+                    batches.push(population.slice(i, i + batchSize));
+                }
+                
+                const results = await Promise.all(
+                    batches.map(batch => 
+                        Promise.resolve(batch.map(individual => 
+                            this.evaluateAssignment(individual, unlockedItems, mode)
+                        ))
+                    )
+                );
+                
+                return results.flat();
+            }
+
+            async advancedReproduction(population, scores, mutationRate) {
+                const newPopulation = [];
+                const eliteSize = Math.floor(population.length * 0.1);
+                
+                // Elite selection
+                const sortedIndices = scores.map((score, index) => ({ score, index }))
+                    .sort((a, b) => b.score - a.score);
+                
+                for (let i = 0; i < eliteSize; i++) {
+                    newPopulation.push([...population[sortedIndices[i].index]]);
+                }
+                
+                // Advanced crossover and mutation
+                while (newPopulation.length < population.length) {
+                    const parent1 = this.tournamentSelection(population, scores, 5);
+                    const parent2 = this.tournamentSelection(population, scores, 5);
+                    
+                    let offspring;
+                    if (Math.random() < 0.8) {
+                        offspring = this.uniformCrossover(parent1, parent2);
+                    } else {
+                        offspring = this.multiPointCrossover(parent1, parent2);
+                    }
+                    
+                    if (Math.random() < mutationRate) {
+                        this.adaptiveMutation(offspring);
+                    }
+                    
+                    newPopulation.push(offspring);
+                }
+                
+                return newPopulation;
+            }
+
+            uniformCrossover(parent1, parent2) {
+                const offspring = [];
+                for (let i = 0; i < parent1.length; i++) {
+                    offspring.push(Math.random() < 0.5 ? parent1[i] : parent2[i]);
+                }
+                return offspring;
+            }
+
+            multiPointCrossover(parent1, parent2) {
+                const offspring = [...parent1];
+                const crossoverPoints = Math.floor(Math.random() * 3) + 1;
+                
+                for (let i = 0; i < crossoverPoints; i++) {
+                    const start = Math.floor(Math.random() * parent1.length);
+                    const length = Math.floor(Math.random() * (parent1.length - start)) + 1;
+                    
+                    for (let j = start; j < start + length && j < parent1.length; j++) {
+                        offspring[j] = parent2[j];
+                    }
+                }
+                
+                return offspring;
+            }
+
+            adaptiveMutation(individual) {
+                const mutationStrength = Math.random() < 0.5 ? 1 : Math.floor(Math.random() * 3) + 1;
+                
+                for (let i = 0; i < mutationStrength; i++) {
+                    const index = Math.floor(Math.random() * individual.length);
+                    individual[index] = Math.floor(Math.random() * this.numScales);
+                }
+            }
+
+            async simulatedAnnealingOptimize(unlockedItems, mode) {
+                const maxIterations = this.optimizationParams.maxGenerations * 100;
+                const initialTemperature = 1000;
+                const coolingRate = 0.995;
+                
+                let currentSolution = this.createWeightBalancedAssignment(unlockedItems);
+                let currentScore = this.evaluateAssignment(currentSolution, unlockedItems, mode);
+                
+                let bestSolution = [...currentSolution];
+                let bestScore = currentScore;
+                
+                let temperature = initialTemperature;
+                let evaluations = 0;
+                const startTime = Date.now();
+                
+                for (let iteration = 0; iteration < maxIterations && !this.shouldStopOptimization; iteration++) {
+                    // Generate neighbor solution
+                    const neighbor = this.generateNeighborSolution(currentSolution);
+                    const neighborScore = this.evaluateAssignment(neighbor, unlockedItems, mode);
+                    evaluations++;
+                    
+                    // Accept or reject based on probability
+                    const delta = neighborScore - currentScore;
+                    const acceptanceProbability = delta > 0 ? 1 : Math.exp(delta / temperature);
+                    
+                    if (Math.random() < acceptanceProbability) {
+                        currentSolution = neighbor;
+                        currentScore = neighborScore;
+                        
+                        if (neighborScore > bestScore) {
+                            bestSolution = [...neighbor];
+                            bestScore = neighborScore;
+                            this.performanceMetrics.bestScore = bestScore;
+                        }
+                    }
+                    
+                    // Cool down
+                    temperature *= coolingRate;
+                    
+                    // Update progress
+                    if (iteration % 100 === 0) {
+                        const progress = (iteration / maxIterations) * 100;
+                        this.updateProgress(progress);
+                        this.updatePerformanceMetrics(evaluations, bestScore, Math.floor(iteration / 100), startTime);
+                        await new Promise(resolve => setTimeout(resolve, 1));
+                    }
+                    
+                    // Check time limit
+                    if (Date.now() - startTime > this.optimizationParams.maxOptimizationTime) {
+                        break;
+                    }
+                }
+                
+                const endTime = Date.now();
+                return {
+                    success: true,
+                    algorithm: 'Simulated Annealing',
+                    assignment: bestSolution,
+                    unlockedItems: unlockedItems,
+                    score: bestScore,
+                    evaluations: evaluations,
+                    timeMs: endTime - startTime
+                };
+            }
+
+            generateNeighborSolution(solution) {
+                const neighbor = [...solution];
+                const numChanges = Math.floor(Math.random() * 3) + 1;
+                
+                for (let i = 0; i < numChanges; i++) {
+                    const index = Math.floor(Math.random() * neighbor.length);
+                    neighbor[index] = Math.floor(Math.random() * this.numScales);
+                }
+                
+                return neighbor;
+            }
+
+            async hybridOptimize(unlockedItems, mode) {
+                this.updateAlgorithmStatus("Hybrid Stage 1: Genetic Algorithm");
+                
+                // Stage 1: Genetic Algorithm (70% of time)
+                const geneticTime = this.optimizationParams.maxOptimizationTime * 0.7;
+                const originalMaxTime = this.optimizationParams.maxOptimizationTime;
+                this.optimizationParams.maxOptimizationTime = geneticTime;
+                
+                const geneticResult = await this.enhancedGeneticAlgorithm(unlockedItems, mode);
+                
+                if (this.shouldStopOptimization) {
+                    this.optimizationParams.maxOptimizationTime = originalMaxTime;
+                    return geneticResult;
+                }
+                
+                this.updateAlgorithmStatus("Hybrid Stage 2: Simulated Annealing");
+                
+                // Stage 2: Simulated Annealing refinement (30% of time)
+                this.optimizationParams.maxOptimizationTime = originalMaxTime * 0.3;
+                
+                // Start simulated annealing from genetic algorithm result
+                const refinedResult = await this.simulatedAnnealingOptimize(unlockedItems, mode);
+                
+                // Restore original time limit
+                this.optimizationParams.maxOptimizationTime = originalMaxTime;
+                
+                // Return the better result
+                const finalResult = refinedResult.score > geneticResult.score ? refinedResult : geneticResult;
+                finalResult.algorithm = 'Hybrid (Genetic + Simulated Annealing)';
+                finalResult.evaluations = geneticResult.evaluations + refinedResult.evaluations;
+                finalResult.timeMs = geneticResult.timeMs + refinedResult.timeMs;
+                
+                return finalResult;
+            }
+
+            stopOptimization() {
+                this.shouldStopOptimization = true;
+                this.showMessage("Stopping optimization...", "warning");
+            }
+
+            resetPerformanceMetrics() {
+                this.performanceMetrics = {
+                    startTime: Date.now(),
+                    evaluations: 0,
+                    bestScore: -Infinity,
+                    generation: 0,
+                    convergenceHistory: []
+                };
+            }
+
+            updatePerformanceMetrics(evaluations, bestScore, generation, startTime) {
+                this.performanceMetrics.evaluations = evaluations;
+                this.performanceMetrics.bestScore = bestScore;
+                this.performanceMetrics.generation = generation;
+                
+                const timeElapsed = (Date.now() - startTime) / 1000;
+                const evaluationsPerSec = Math.round(evaluations / Math.max(timeElapsed, 0.1));
+                
+                // Update UI
+                document.getElementById('evaluationsPerSec').textContent = evaluationsPerSec.toLocaleString();
+                document.getElementById('currentBestScore').textContent = bestScore.toFixed(3);
+                document.getElementById('currentGeneration').textContent = generation;
+                document.getElementById('timeElapsed').textContent = timeElapsed.toFixed(1) + 's';
+                
+                // Calculate convergence rate
+                this.performanceMetrics.convergenceHistory.push(bestScore);
+                if (this.performanceMetrics.convergenceHistory.length > 10) {
+                    this.performanceMetrics.convergenceHistory.shift();
+                }
+                
+                const convergenceRate = this.calculateConvergenceRate();
+                document.getElementById('convergenceRate').textContent = convergenceRate.toFixed(1) + '%';
+                
+                // Update memory usage
+                this.updateMemoryInfo();
+            }
+
+            calculateConvergenceRate() {
+                if (this.performanceMetrics.convergenceHistory.length < 2) return 0;
+                
+                const recent = this.performanceMetrics.convergenceHistory.slice(-5);
+                const older = this.performanceMetrics.convergenceHistory.slice(-10, -5);
+                
+                if (older.length === 0) return 0;
+                
+                const recentAvg = recent.reduce((a, b) => a + b, 0) / recent.length;
+                const olderAvg = older.reduce((a, b) => a + b, 0) / older.length;
+                
+                const improvement = recentAvg - olderAvg;
+                const maxPossibleImprovement = Math.abs(olderAvg) + 100; // Normalized
+                
+                return Math.max(0, Math.min(100, (improvement / maxPossibleImprovement) * 100));
+            }
+
+            updateMemoryInfo() {
+                if (performance.memory) {
+                    const memoryMB = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(1);
+                    document.getElementById('memoryUsage').textContent = memoryMB + 'MB';
+                    document.getElementById('memoryInfo').textContent = `Memory: ${memoryMB}MB`;
+                } else {
+                    const estimatedMemory = (this.items.length * 0.001).toFixed(1);
+                    document.getElementById('memoryInfo').textContent = `Memory: ~${estimatedMemory}MB`;
+                }
+            }
+
+            showPerformanceMonitor(show) {
+                const monitor = document.getElementById('performanceMonitor');
+                if (monitor) {
+                    monitor.style.display = show ? 'block' : 'none';
+                }
+            }
+
+            updateAlgorithmStatus(status) {
+                const statusElement = document.getElementById('algorithmStatus');
+                if (statusElement) {
+                    statusElement.textContent = status;
+                }
+            }
+
+            showOptimizationProgress(show) {
+                const progressDiv = document.getElementById('optimizationProgress');
+                const optimizeBtn = document.getElementById('optimizeBtn');
+                const stopBtn = document.getElementById('stopOptimizationBtn');
+                
+                if (progressDiv) {
+                    progressDiv.style.display = show ? 'block' : 'none';
+                }
+                
+                if (optimizeBtn) {
+                    optimizeBtn.disabled = show;
+                    optimizeBtn.textContent = show ? 'OPTIMIZING...' : 'OPTIMIZE ALL SCALES';
+                    optimizeBtn.style.display = show ? 'none' : 'inline-block';
+                }
+                
+                if (stopBtn) {
+                    stopBtn.style.display = show ? 'inline-block' : 'none';
+                }
+            }
+
+            updateProgress(percentage) {
+                const progressFill = document.getElementById('progressFill');
+                const progressText = document.getElementById('progressText');
+                
+                if (progressFill) {
+                    progressFill.style.width = percentage + '%';
+                }
+                
+                if (progressText) {
+                    progressText.textContent = `Optimizing... ${Math.round(percentage)}%`;
+                }
+            }
+
+            terminateWorkers() {
+                this.workers.forEach(worker => {
+                    if (worker && worker.terminate) {
+                        worker.terminate();
+                    }
+                });
+                this.workers = [];
+            }
+
+            exportPerformanceData() {
+                if (!this.currentOptimizationResult) {
+                    this.showMessage("No optimization data to export", "warning");
+                    return;
+                }
+                
+                const performanceData = {
+                    project: this.projectName,
+                    timestamp: new Date().toISOString(),
+                    optimization: this.currentOptimizationResult,
+                    performance: this.performanceMetrics,
+                    parameters: this.optimizationParams,
+                    systemInfo: {
+                        userAgent: navigator.userAgent,
+                        hardwareConcurrency: navigator.hardwareConcurrency,
+                        memory: performance.memory ? {
+                            usedJSHeapSize: performance.memory.usedJSHeapSize,
+                            totalJSHeapSize: performance.memory.totalJSHeapSize,
+                            jsHeapSizeLimit: performance.memory.jsHeapSizeLimit
+                        } : null
+                    }
+                };
+                
+                const filename = `${this.projectName}_performance_data_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.json`;
+                this.downloadFile(JSON.stringify(performanceData, null, 2), filename, 'application/json');
+                this.showMessage("Performance data exported successfully", "result");
+            }
+
+            saveConfiguration() {
+                const config = {
+                    projectName: this.projectName,
+                    numScales: this.numScales,
+                    maxItems: this.maxItems,
+                    minTolerances: this.minTolerances.slice(0, this.numScales),
+                    optimizationParams: this.optimizationParams,
+                    timestamp: new Date().toISOString()
+                };
+                
+                const filename = `${this.projectName}_config_${new Date().toISOString().slice(0,10)}.json`;
+                this.downloadFile(JSON.stringify(config, null, 2), filename, 'application/json');
+                this.showMessage("Configuration saved successfully", "result");
+            }
+
+            loadConfiguration() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            try {
+                                const config = JSON.parse(e.target.result);
+                                this.applyConfiguration(config);
+                                this.showMessage("Configuration loaded successfully", "result");
+                            } catch (error) {
+                                this.showMessage("Error loading configuration: " + error.message, "error");
+                            }
+                        };
+                        reader.readAsText(file);
+                    }
+                };
+                input.click();
+            }
+
+            applyConfiguration(config) {
+                if (config.projectName) {
+                    this.projectName = config.projectName;
+                    document.getElementById('projectName').value = config.projectName;
+                }
+                
+                if (config.numScales) {
+                    document.getElementById('numScales').value = config.numScales;
+                    this.updateScaleCount(config.numScales);
+                }
+                
+                if (config.maxItems) {
+                    document.getElementById('maxItems').value = config.maxItems;
+                    this.updateMaxItems(config.maxItems);
+                }
+                
+                if (config.minTolerances) {
+                    this.minTolerances = [...config.minTolerances];
+                    this.createMinToleranceControls();
+                }
+                
+                if (config.optimizationParams) {
+                    this.optimizationParams = { ...this.optimizationParams, ...config.optimizationParams };
+                    this.updateAdvancedParametersUI();
+                }
+            }
+
+            updateAdvancedParametersUI() {
+                document.getElementById('populationSize').value = this.optimizationParams.populationSize;
+                document.getElementById('maxGenerations').value = this.optimizationParams.maxGenerations;
+                document.getElementById('mutationRate').value = Math.round(this.optimizationParams.mutationRate * 100);
+                document.getElementById('convergenceThreshold').value = this.optimizationParams.convergenceThreshold;
+                document.getElementById('maxOptimizationTime').value = this.optimizationParams.maxOptimizationTime / 1000;
+                document.getElementById('enableParallelProcessing').checked = this.optimizationParams.enableParallelProcessing;
+            }
+
+            // Enhanced UI methods
+            debounce(key, func, delay) {
+                if (this.debounceTimeouts.has(key)) {
+                    clearTimeout(this.debounceTimeouts.get(key));
+                }
+                const timeoutId = setTimeout(func, delay);
+                this.debounceTimeouts.set(key, timeoutId);
+            }
+
+            createMinToleranceControls() {
+                const container = document.getElementById('minToleranceContainer');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                for (let i = 0; i < this.numScales; i++) {
+                    const item = document.createElement('div');
+                    item.className = 'min-tolerance-item';
+                    
+                    const scaleColor = this.scaleColors[i] || '#666';
+                    
+                    item.innerHTML = `
+                        <label for="minTolerance${i}" style="font-weight: bold; color: ${scaleColor}; font-size: 16px; display: block;">
+                            Scale ${i + 1} : Minimum Tolerance
+                        </label>
+                        <input type="number" id="minTolerance${i}" class="min-tolerance-input" 
+                               value="${(this.minTolerances[i] || 0).toFixed(2)}" min="0" step="0.1" 
+                               onchange="optimizer.setMinTolerance(${i}, this.value)">
+                        <small style="color: #666; margin-top: 5px; display: block;">
+                            Current tolerance: <span id="current${i}" style="font-weight: bold;">0.00</span>
+                        </small>
+                    `;
+                    
+                    container.appendChild(item);
+                }
+                
+                this.updateMinToleranceStatus();
+            }
+
+            setMinTolerance(scaleIndex, value) {
+                const numValue = parseFloat(value) || 0.0;
+                if (numValue < 0) {
+                    this.showMessage("Minimum tolerance cannot be negative", "error");
+                    document.getElementById(`minTolerance${scaleIndex}`).value = this.minTolerances[scaleIndex];
+                    return;
+                }
+                this.minTolerances[scaleIndex] = numValue;
+                this.updateMinToleranceStatus();
+                this.debounce('toleranceUpdate', () => this.renderToleranceCards(), 300);
+            }
+
+            updateMinToleranceStatus() {
+                const statusElement = document.getElementById('minToleranceStatus');
+                if (statusElement) {
+                    const statusText = [];
+                    for (let i = 0; i < this.numScales; i++) {
+                        statusText.push(`Scale ${i + 1}: ${(this.minTolerances[i] || 0.0).toFixed(2)}`);
+                    }
+                    statusElement.textContent = statusText.join(' | ');
+                }
+            }
+
+            updateProjectName(name) {
+                this.projectName = name.trim() || ' ';
+                this.projectName = this.projectName.replace(/[<>:"/\\|?*]/g, '_');
+            }
+
+            updateScaleCount(value) {
+                const newScaleCount = parseInt(value);
+                if (newScaleCount < 2 || newScaleCount > 20) {
+                    this.showMessage("Number of scales must be between 2 and 20", "error");
+                    return;
+                }
+
+                this.numScales = newScaleCount;
+                document.getElementById('currentScaleCount').textContent = this.numScales;
+                
+                // Redistribute items across new scale count
+                this.items.forEach((item, index) => {
+                    for (let i = 1; i <= 20; i++) {
+                        delete item[`scale${i}`];
+                    }
+                    for (let i = 1; i <= this.numScales; i++) {
+                        item[`scale${i}`] = i === ((index % this.numScales) + 1);
+                    }
+                });
+                
+                this.updateTableHeaders();
+                this.createMinToleranceControls();
+                this.updateUI();
+            }
+
+            updateTableHeaders() {
+                const headerRow = document.getElementById('tableHeader');
+                const scaleHeaders = headerRow.querySelectorAll('.scale-header');
+                scaleHeaders.forEach(header => header.remove());
+                
+                const lockHeader = headerRow.children[headerRow.children.length - 2];
+                const actionsHeader = headerRow.lastElementChild;
+                for (let i = 1; i <= this.numScales; i++) {
+                    const th = document.createElement('th');
+                    th.className = 'scale-header';
+                    th.textContent = `Scale ${i}`;
+                    headerRow.insertBefore(th, lockHeader);
+                }
+            }
+
+            // Core optimization methods (continuing with existing logic)
+            calculateMinDifference(weights) {
+                if (weights.length < 2) return 0;
+                let minDiff = Infinity;
+                
+                for (let i = 0; i < weights.length; i++) {
+                    for (let j = i + 1; j < weights.length; j++) {
+                        const diff = Math.abs(weights[i] - weights[j]);
+                        if (diff > 0 && diff < minDiff) {
+                            minDiff = diff;
+                        }
+                    }
+                }
+                return minDiff === Infinity ? 0 : minDiff;
+            }
+
+            calculateScaleTolerance(weights) {
+                if (weights.length < 2) {
+                    return {
+                        minWeight: 0,
+                        minDiff: 0,
+                        factorA: 0,
+                        factorB: 0,
+                        tolerance: 0
+                    };
+                }
+                
+                const minWeight = Math.min(...weights);
+                const minDiff = this.calculateMinDifference(weights);
+                const factorA = minWeight / 3;
+                const factorB = minDiff * 2 / 3;
+                const tolerance = Math.min(factorA, factorB);
+                
+                return {
+                    minWeight,
+                    minDiff,
+                    factorA,
+                    factorB,
+                    tolerance
+                };
+            }
+
+            evaluateAssignment(assignment, unlockedItems, mode) {
+                // Create a temporary assignment including locked items
+                const fullAssignment = this.items.map((item, index) => {
+                    if (this.lockedItems.has(index)) {
+                        // Find which scale this locked item is currently assigned to
+                        for (let i = 1; i <= this.numScales; i++) {
+                            if (item[`scale${i}`]) {
+                                return i - 1; // Convert to 0-based indexing
+                            }
+                        }
+                        return 0; // Fallback
+                    } else {
+                        // Find this item's index in the unlockedItems array
+                        const unlockedIndex = unlockedItems.indexOf(index);
+                        return assignment[unlockedIndex];
+                    }
+                });
+
+                let tolerances = [];
+                
+                for (let scale = 0; scale < this.numScales; scale++) {
+                    const scaleWeights = [];
+                    fullAssignment.forEach((scaleAssign, itemIndex) => {
+                        if (scaleAssign === scale) {
+                            scaleWeights.push(this.items[itemIndex].weight);
+                        }
+                    });
+                    
+                    const result = this.calculateScaleTolerance(scaleWeights);
+                    const minRequired = this.minTolerances[scale] || 0.0;
+                    
+                    // Penalize if minimum requirement not met
+                    if (result.tolerance < minRequired) {
+                        tolerances.push(0);
+                    } else {
+                        tolerances.push(result.tolerance);
+                    }
+                }
+                
+                // Calculate objective based on mode
+                switch(mode) {
+                    case 'balanced':
+                        return tolerances.reduce((a, b) => a + b, 0);
+                    case 'product':
+                        return tolerances.reduce((a, b) => a * b, 1);
+                    case 'min':
+                        return Math.min(...tolerances);
+                    case 'weighted':
+                        // Add weighted optimization here if needed
+                        return tolerances.reduce((a, b) => a + b, 0);
+                    default:
+                        return tolerances.reduce((a, b) => a + b, 0);
+                }
+            }
+
+            async bruteForceOptimize(unlockedItems, mode) {
+                let bestAssignment = null;
+                let bestScore = -Infinity;
+                let evaluations = 0;
+                const startTime = Date.now();
+
+                // Generate all possible assignments for unlocked items
+                const numUnlocked = unlockedItems.length;
+                const totalCombinations = Math.pow(this.numScales, numUnlocked);
+                
+                if (totalCombinations > 1000000) {
+                    return { success: false, error: "Too many combinations for brute force. Try a different algorithm." };
+                }
+
+                const generateAssignments = async (index, currentAssignment) => {
+                    if (index === numUnlocked) {
+                        evaluations++;
+                        const score = this.evaluateAssignment(currentAssignment, unlockedItems, mode);
+                        
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestAssignment = [...currentAssignment];
+                            this.performanceMetrics.bestScore = bestScore;
+                        }
+                        
+                        // Update progress periodically
+                        if (evaluations % 1000 === 0) {
+                            const progress = (evaluations / totalCombinations) * 100;
+                            this.updateProgress(progress);
+                            this.updatePerformanceMetrics(evaluations, bestScore, Math.floor(evaluations / 1000), startTime);
+                            await new Promise(resolve => setTimeout(resolve, 1));
+                        }
+                        return;
+                    }
+
+                    for (let scale = 0; scale < this.numScales; scale++) {
+                        if (this.shouldStopOptimization) return;
+                        currentAssignment[index] = scale;
+                        await generateAssignments(index + 1, currentAssignment);
+                    }
+                };
+
+                await generateAssignments(0, new Array(numUnlocked));
+                
+                const endTime = Date.now();
+                return {
+                    success: true,
+                    algorithm: 'Brute Force',
+                    assignment: bestAssignment,
+                    unlockedItems: unlockedItems,
+                    score: bestScore,
+                    evaluations: evaluations,
+                    timeMs: endTime - startTime
+                };
+            }
+
+            tournamentSelection(population, scores, tournamentSize = 3) {
+                let bestIndex = Math.floor(Math.random() * population.length);
+                let bestScore = scores[bestIndex];
+
+                for (let i = 1; i < tournamentSize; i++) {
+                    const index = Math.floor(Math.random() * population.length);
+                    if (scores[index] > bestScore) {
+                        bestIndex = index;
+                        bestScore = scores[index];
+                    }
+                }
+
+                return [...population[bestIndex]];
+            }
+
+            applyOptimizedAssignment(assignment, unlockedItems) {
+                // Clear all assignments for unlocked items
+                unlockedItems.forEach(itemIndex => {
+                    for (let i = 1; i <= this.numScales; i++) {
+                        this.items[itemIndex][`scale${i}`] = false;
+                    }
+                });
+
+                // Apply new assignments
+                assignment.forEach((scaleIndex, unlockedArrayIndex) => {
+                    const itemIndex = unlockedItems[unlockedArrayIndex];
+                    const scaleNumber = scaleIndex + 1; // Convert back to 1-based indexing
+                    this.items[itemIndex][`scale${scaleNumber}`] = true;
+                });
+            }
+
+            // Add remaining methods for UI management, item management, etc.
+            addItem() {
+                if (this.items.length >= this.maxItems) {
+                    this.showMessage(`Cannot add more items. Maximum limit: ${this.maxItems}`, "error");
+                    return;
+                }
+                
+                const newItem = { 
+                    name: `Item ${this.items.length + 1}`,
+                    weight: 1000 + Math.floor(Math.random() * 100)
+                };
+                
+                const scaleCounts = new Array(this.numScales).fill(0);
+                this.items.forEach(item => {
+                    for (let i = 1; i <= this.numScales; i++) {
+                        if (item[`scale${i}`]) {
+                            scaleCounts[i - 1]++;
+                            break;
+                        }
+                    }
+                });
+                
+                const minCountIndex = scaleCounts.indexOf(Math.min(...scaleCounts));
+                for (let i = 1; i <= this.numScales; i++) {
+                    newItem[`scale${i}`] = i === (minCountIndex + 1);
+                }
+                
+                this.items.push(newItem);
+                this.updateUI();
+                this.showMessage("Item added successfully", "info");
+            }
+
+            removeItem() {
+                if (this.items.length > 0) {
+                    this.items.pop();
+                    const newLockedItems = new Set();
+                    for (const lockedIndex of this.lockedItems) {
+                        if (lockedIndex < this.items.length) {
+                            newLockedItems.add(lockedIndex);
+                        }
+                    }
+                    this.lockedItems = newLockedItems;
+                    this.updateUI();
+                    this.showMessage("Item removed successfully", "info");
+                } else {
+                    this.showMessage("No items to remove", "warning");
+                }
+            }
+
+            clearAll() {
+                if (this.items.length === 0) {
+                    this.showMessage("No items to clear", "warning");
+                    return;
+                }
+                
+                if (confirm("Clear all items? This action cannot be undone.")) {
+                    this.items = [];
+                    this.lockedItems.clear();
+                    this.updateUI();
+                    this.showMessage("All items cleared successfully", "info");
+                }
+            }
+
+            loadSampleData() {
+                this.items = [];
+                this.lockedItems.clear();
+                const sampleWeights = [84.8, 42.06, 33.749, 18.453, 8.485, 5.12, 6.571, 32.536];
+                const sampleNames = ["BI", "6544401", "6537259", "6544400", "6537257", "4656764", "6537260", "654399"];
+                
+                sampleWeights.forEach((weight, index) => {
+                    const item = { 
+                        name: sampleNames[index],
+                        weight: weight 
+                    };
+                    for (let i = 1; i <= this.numScales; i++) {
+                        item[`scale${i}`] = false;
+                    }
+                    item[`scale${((index % this.numScales) + 1)}`] = true;
+                    this.items.push(item);
+                });
+                
+                this.updateUI();
+                this.showMessage("Sample data loaded successfully", "info");
+            }
+
+            updateUI() {
+                try {
+                    this.renderTable();
+                    this.renderToleranceCards();
+                    this.updateDebugInfo();
+                    this.updateMemoryInfo();
+                } catch (error) {
+                    console.error("Error in updateUI:", error);
+                }
+            }
+
+            renderTable() {
+                const tbody = document.getElementById('itemTableBody');
+                if (!tbody) return;
+                
+                tbody.innerHTML = '';
+                
+                this.items.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    
+                    if (this.lockedItems.has(index)) {
+                        row.classList.add('locked-row');
+                    }
+                    
+                    let html = `
+                        <td><input type="text" value="${this.escapeHtml(item.name)}" onchange="optimizer.updateItemName(${index}, this.value)"></td>
+                        <td><input type="number" value="${item.weight}" min="0" step="1" onchange="optimizer.updateWeight(${index}, this.value)"></td>
+                    `;
+                    
+                    for (let i = 1; i <= this.numScales; i++) {
+                        const isLocked = this.lockedItems.has(index);
+                        html += `<td><input type="checkbox" ${item[`scale${i}`] ? 'checked' : ''} ${isLocked ? 'disabled' : ''} onchange="optimizer.updateAssignment(${index}, ${i}, this.checked)"></td>`;
+                    }
+                    
+                    const isLocked = this.lockedItems.has(index);
+                    html += `
+                        <td><button class="lock-button ${isLocked ? 'locked' : 'unlocked'}" onclick="optimizer.toggleItemLock(${index})">${isLocked ? 'Locked' : 'Unlocked'}</button></td>
+                        <td><button onclick="optimizer.deleteItem(${index})" style="background: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer;">Delete</button></td>
+                    `;
+                    
+                    row.innerHTML = html;
+                    tbody.appendChild(row);
+                });
+            }
+
+            renderToleranceCards() {
+                const container = document.getElementById('toleranceCards');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                for (let i = 1; i <= this.numScales; i++) {
+                    const scaleItems = this.items.filter(item => item[`scale${i}`]);
+                    const scaleWeights = scaleItems.map(item => item.weight);
+                    const results = this.calculateScaleTolerance(scaleWeights);
+                    const minRequired = this.minTolerances[i - 1] || 0.0;
+                    const meetsMinimum = results.tolerance >= minRequired;
+                    
+                    // Update current tolerance display in minimum tolerance section
+                    const currentSpan = document.getElementById(`current${i - 1}`);
+                    if (currentSpan) {
+                        const displayValue = results.tolerance === 0 ? '0' : results.tolerance.toFixed(2);
+                        currentSpan.textContent = displayValue;
+                        currentSpan.style.color = meetsMinimum && minRequired > 0 ? '#27ae60' : '#e74c3c';
+                    }
+                    
+                    const card = document.createElement('div');
+                    card.className = 'scale-card';
+                    
+                    if (minRequired > 0) {
+                        card.style.border = `3px solid ${meetsMinimum ? '#27ae60' : '#e74c3c'}`;
+                    }
+                    
+                    const statusIndicator = minRequired > 0 ? 
+                        `<span class="status-indicator ${meetsMinimum ? 'status-success' : 'status-error'}"></span>` : '';
+                    
+                    const itemList = scaleItems.length > 0 ? 
+                        scaleItems.map(item => `${item.name} (${item.weight}g)`).join(', ') : 
+                        'No items assigned';
+                    
+                    card.innerHTML = `
+                        <h3 style="color: ${this.scaleColors[i-1] || '#666'}">Scale ${i}</h3>
+                        <div class="metric">
+                            <span>Assigned Items:</span>
+                            <span><strong>${scaleItems.length}</strong></span>
+                        </div>
+                        <div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 4px; border-left: 4px solid ${this.scaleColors[i-1] || '#666'}; min-height: 50px; max-height: 120px; overflow-y: auto;">
+                            <strong style="display: block; margin-bottom: 5px; color: ${this.scaleColors[i-1] || '#666'};">Items:</strong>
+                            <div style="font-size: 13px; line-height: 1.4; word-wrap: break-word;">${itemList}</div>
+                        </div>
+                        <div class="metric">
+                            <span>Total Weight:</span>
+                            <span>${scaleWeights.reduce((a, b) => a + b, 0).toFixed(2)}g</span>
+                        </div>
+                        <div class="metric">
+                            <span>Smallest Weight:</span>
+                            <span>${results.minWeight.toFixed(2)}g</span>
+                        </div>
+                        <div class="metric">
+                            <span>Smallest Difference:</span>
+                            <span>${results.minDiff.toFixed(2)}g</span>
+                        </div>
+                        <div class="metric">
+                            <span>Factor A (1/3 × Min Weight):</span>
+                            <span>${results.factorA.toFixed(2)}</span>
+                        </div>
+                        <div class="metric">
+                            <span>Factor B (2/3 × Min Diff):</span>
+                            <span>${results.factorB.toFixed(2)}</span>
+                        </div>
+                        ${minRequired > 0 ? 
+                            `<div class="metric" style="background: ${meetsMinimum ? '#27ae60' : '#e74c3c'}; color: white; margin: 5px -20px; padding: 8px 20px; border-radius: 4px;">
+                                <span><strong>Min Required:</strong></span>
+                                <span><strong>${minRequired.toFixed(2)}</strong></span>
+                            </div>` : ''}
+                        <div class="metric" style="background: ${this.scaleColors[i-1] || '#666'}; color: white; margin: 10px -20px -20px -20px; padding: 12px 20px; border-radius: 0 0 8px 8px;">
+                            <span><strong>TOLERANCE:</strong></span>
+                            <span><strong>${results.tolerance.toFixed(2)} ${statusIndicator}</strong></span>
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                }
+            }
+
+            updateDebugInfo() {
+                const debugElement = document.getElementById('debugInfo');
+                if (debugElement) {
+                    debugElement.textContent = `Items: ${this.items.length}, Scales: ${this.numScales}`;
+                }
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            updateItemName(index, newName) {
+                if (newName.trim()) {
+                    this.items[index].name = newName.trim();
+                }
+            }
+
+            updateWeight(index, value) {
+                const weight = parseFloat(value);
+                if (!isNaN(weight) && weight >= 0) {
+                    this.items[index].weight = weight;
+                    this.debounce('weightUpdate', () => this.renderToleranceCards(), 300);
+                }
+            }
+
+            updateAssignment(index, scaleNum, checked) {
+                if (this.lockedItems.has(index)) {
+                    this.showMessage(`Item "${this.items[index].name}" is locked and cannot be reassigned`, "warning");
+                    return;
+                }
+                
+                if (checked) {
+                    for (let i = 1; i <= this.numScales; i++) {
+                        this.items[index][`scale${i}`] = i === scaleNum;
+                    }
+                } else {
+                    this.items[index][`scale${scaleNum}`] = false;
+                    
+                    let assignedToAny = false;
+                    for (let i = 1; i <= this.numScales; i++) {
+                        if (this.items[index][`scale${i}`]) {
+                            assignedToAny = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!assignedToAny) {
+                        this.items[index].scale1 = true;
+                    }
+                }
+                
+                this.debounce('assignmentUpdate', () => this.updateUI(), 300);
+            }
+
+            deleteItem(index) {
+                if (confirm(`Delete item "${this.items[index].name}"?`)) {
+                    this.items.splice(index, 1);
+                    
+                    const newLockedItems = new Set();
+                    for (const lockedIndex of this.lockedItems) {
+                        if (lockedIndex < index) {
+                            newLockedItems.add(lockedIndex);
+                        } else if (lockedIndex > index) {
+                            newLockedItems.add(lockedIndex - 1);
+                        }
+                    }
+                    this.lockedItems = newLockedItems;
+                    
+                    this.updateUI();
+                    this.showMessage("Item deleted successfully", "info");
+                }
+            }
+
+            toggleItemLock(index) {
+                if (this.lockedItems.has(index)) {
+                    this.lockedItems.delete(index);
+                    this.showMessage(`Item "${this.items[index].name}" unlocked`, "info");
+                } else {
+                    this.lockedItems.add(index);
+                    this.showMessage(`Item "${this.items[index].name}" locked`, "info");
+                }
+                this.updateUI();
+            }
+
+            lockAllItems() {
+                if (this.items.length === 0) {
+                    this.showMessage("No items to lock", "warning");
+                    return;
+                }
+                
+                for (let i = 0; i < this.items.length; i++) {
+                    this.lockedItems.add(i);
+                }
+                this.updateUI();
+                this.showMessage(`All ${this.items.length} items locked`, "info");
+            }
+
+            unlockAllItems() {
+                const lockedCount = this.lockedItems.size;
+                if (lockedCount === 0) {
+                    this.showMessage("No items are currently locked", "warning");
+                    return;
+                }
+                
+                this.lockedItems.clear();
+                this.updateUI();
+                this.showMessage(`All ${lockedCount} items unlocked`, "info");
+            }
+
+            calculateTolerances() {
+                this.renderToleranceCards();
+                this.showMessage("Tolerances calculated successfully", "info");
+            }
+
+            resetAssignments() {
+                if (this.items.length === 0) {
+                    this.showMessage("No items to reset", "warning");
+                    return;
+                }
+
+                if (confirm("Reset all item assignments to default distribution?")) {
+                    this.items.forEach((item, index) => {
+                        for (let i = 1; i <= this.numScales; i++) {
+                            item[`scale${i}`] = i === ((index % this.numScales) + 1);
+                        }
+                    });
+                    
+                    this.updateUI();
+                    this.showMessage("Assignments reset successfully", "info");
+                }
+            }
+
+            showOptimizationResults(mode, result) {
+                let totalTolerance = 0;
+                let toleranceDetails = [];
+                let lockedItemsCount = this.lockedItems.size;
+                let productTolerance = 1;
+                let minTolerance = Infinity;
+                
+                for (let i = 1; i <= this.numScales; i++) {
+                    const scaleWeights = this.items.filter(item => item[`scale${i}`]).map(item => item.weight);
+                    const results = this.calculateScaleTolerance(scaleWeights);
+                    const minRequired = this.minTolerances[i - 1] || 0.0;
+                    
+                    totalTolerance += results.tolerance;
+                    productTolerance *= results.tolerance;
+                    minTolerance = Math.min(minTolerance, results.tolerance);
+                    
+                    toleranceDetails.push({
+                        scale: i,
+                        tolerance: results.tolerance,
+                        itemCount: scaleWeights.length,
+                        minRequired: minRequired,
+                        meetsRequirement: results.tolerance >= minRequired,
+                        color: this.scaleColors[i - 1] || '#666'
+                    });
+                }
+                
+                if (minTolerance === Infinity) minTolerance = 0;
+                
+                // Store current result
+                this.currentOptimizationResult = {
+                    timestamp: new Date(),
+                    mode: mode,
+                    algorithm: result.algorithm,
+                    totalTolerance: totalTolerance,
+                    productTolerance: productTolerance,
+                    minTolerance: minTolerance,
+                    toleranceDetails: toleranceDetails,
+                    lockedItemsCount: lockedItemsCount,
+                    totalItems: this.items.length,
+                    evaluations: result.evaluations,
+                    timeMs: result.timeMs,
+                    generations: result.generations || 0
+                };
+                
+                // Add to history
+                this.optimizationHistory.push({...this.currentOptimizationResult});
+                
+                // Show the results section
+                document.getElementById('optimizationResults').style.display = 'block';
+                
+                // Render the results
+                this.renderOptimizationResults();
+                
+                // Scroll to results
+                document.getElementById('optimizationResults').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }
+
+            renderOptimizationResults() {
+                const container = document.getElementById('optimizationResultsContent');
+                if (!container || !this.currentOptimizationResult) return;
+                
+                const result = this.currentOptimizationResult;
+                const modeNames = {
+                    'balanced': 'Balanced (Sum)',
+                    'product': 'Product',
+                    'min': 'Min-Max',
+                    'weighted': 'Weighted'
+                };
+                
+                container.innerHTML = `
+                    <div class="optimization-results-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap;">
+                            <h3 style="margin: 0; font-size: 24px;">Optimization Complete</h3>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <span style="background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; font-size: 14px;">
+                                    ${modeNames[result.mode]} Strategy
+                                </span>
+                                <span style="background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 20px; font-size: 14px;">
+                                    ${result.algorithm}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="optimization-summary">
+                            <div class="summary-metric">
+                                <h4>Sum of Tolerances</h4>
+                                <div class="value">${result.totalTolerance.toFixed(2)}</div>
+                            </div>
+                            <div class="summary-metric">
+                                <h4>Product of Tolerances</h4>
+                                <div class="value">${result.productTolerance.toFixed(3)}</div>
+                            </div>
+                            <div class="summary-metric">
+                                <h4>Minimum Tolerance</h4>
+                                <div class="value">${result.minTolerance.toFixed(3)}</div>
+                            </div>
+                            <div class="summary-metric">
+                                <h4>Total Items</h4>
+                                <div class="value">${result.totalItems}</div>
+                                ${result.lockedItemsCount > 0 ? `<small>${result.lockedItemsCount} locked</small>` : ''}
+                            </div>
+                            <div class="summary-metric">
+                                <h4>Evaluations</h4>
+                                <div class="value">${result.evaluations.toLocaleString()}</div>
+                            </div>
+                            <div class="summary-metric">
+                                <h4>Time</h4>
+                                <div class="value">${(result.timeMs / 1000).toFixed(1)}s</div>
+                                ${result.generations > 0 ? `<small>${result.generations} generations</small>` : ''}
+                            </div>
+                        </div>
+                        
+                        <div class="optimization-timestamp">
+                            Completed: ${result.timestamp.toLocaleString()}
+                        </div>
+                    </div>
+                    
+                    <div class="scale-breakdown">
+                        <h4 style="margin-top: 0; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px;">
+                            Scale Performance Breakdown
+                        </h4>
+                        ${result.toleranceDetails.map(scale => `
+                            <div class="scale-row">
+                                <div class="scale-name" style="color: ${scale.color};">
+                                    Scale ${scale.scale} (${scale.itemCount} items)
+                                </div>
+                                <div class="scale-details">
+                                    ${scale.minRequired > 0 ? `
+                                        <span class="min-req-status ${scale.meetsRequirement ? 'req-met' : 'req-not-met'}">
+                                            Min: ${scale.minRequired.toFixed(2)} ${scale.meetsRequirement ? '✓' : '✗'}
+                                        </span>
+                                    ` : ''}
+                                    <div class="tolerance-value" style="background: ${scale.color}; color: white;">
+                                        ${scale.tolerance.toFixed(3)}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                        
+                        <div class="results-actions">
+                            <button onclick="optimizer.saveOptimizationSnapshot()" style="background: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">
+                                Save Snapshot
+                            </button>
+                            <button onclick="optimizer.exportOptimizationReport()" style="background: #3498db; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">
+                                Export Detailed Report
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            clearOptimizationResults() {
+                document.getElementById('optimizationResults').style.display = 'none';
+                this.currentOptimizationResult = null;
+                this.showMessage("Optimization results cleared", "info");
+            }
+
+            compareResults() {
+                if (this.optimizationHistory.length < 2) {
+                    this.showMessage("Need at least 2 optimization runs to compare results", "warning");
+                    return;
+                }
+                
+                const current = this.optimizationHistory[this.optimizationHistory.length - 1];
+                const previous = this.optimizationHistory[this.optimizationHistory.length - 2];
+                
+                const improvement = current.totalTolerance - previous.totalTolerance;
+                const percentChange = ((improvement / previous.totalTolerance) * 100).toFixed(2);
+                
+                this.showMessage(`Comparison with previous run:<br>
+                    Total tolerance change: ${improvement > 0 ? '+' : ''}${improvement.toFixed(3)} (${percentChange}%)<br>
+                    Previous: ${previous.totalTolerance.toFixed(3)} | Current: ${current.totalTolerance.toFixed(3)}<br>
+                    Algorithm: ${previous.algorithm} → ${current.algorithm}`, "info");
+            }
+
+            saveOptimizationSnapshot() {
+                if (!this.currentOptimizationResult) {
+                    this.showMessage("No optimization result to save", "warning");
+                    return;
+                }
+                
+                const snapshot = {
+                    project: this.projectName,
+                    ...this.currentOptimizationResult,
+                    items: JSON.parse(JSON.stringify(this.items)),
+                    minTolerances: [...this.minTolerances.slice(0, this.numScales)],
+                    optimizationParams: {...this.optimizationParams}
+                };
+                
+                const filename = `${this.projectName}_optimization_snapshot_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.json`;
+                this.downloadFile(JSON.stringify(snapshot, null, 2), filename, 'application/json');
+                this.showMessage("Optimization snapshot saved successfully", "result");
+            }
+
+            exportOptimizationReport() {
+                if (!this.currentOptimizationResult) {
+                    this.showMessage("No optimization result to export", "warning");
+                    return;
+                }
+                
+                this.exportReport();
+            }
+
+            exportToCSV() {
+                if (this.items.length === 0) {
+                    this.showMessage('No data to export', 'error');
+                    return;
+                }
+                
+                let csv = "Pre-Pack Item Name,Weight(grams)";
+                for (let i = 1; i <= this.numScales; i++) {
+                    csv += `,Scale${i}`;
+                }
+                csv += ",Locked\n";
+                
+                this.items.forEach((item, index) => {
+                    const escapedName = `"${item.name.replace(/"/g, '""')}"`;
+                    csv += `${escapedName},${item.weight}`;
+                    for (let i = 1; i <= this.numScales; i++) {
+                        csv += `,${item[`scale${i}`] ? 1 : 0}`;
+                    }
+                    csv += `,${this.lockedItems.has(index) ? 1 : 0}\n`;
+                });
+                
+                const filename = `${this.projectName}_item_assignments.csv`;
+                this.downloadFile(csv, filename, 'text/csv');
+                this.showMessage("CSV exported successfully", "result");
+            }
+
+            exportReport() {
+                let totalTolerance = 0;
+                let scaleDetails = [];
+                
+                for (let i = 1; i <= this.numScales; i++) {
+                    const scaleItems = this.items.filter(item => item[`scale${i}`]);
+                    const scaleWeights = scaleItems.map(item => item.weight);
+                    const results = this.calculateScaleTolerance(scaleWeights);
+                    const minRequired = this.minTolerances[i - 1] || 0.0;
+                    
+                    totalTolerance += results.tolerance;
+                    scaleDetails.push({
+                        scale: i,
+                        itemCount: scaleWeights.length,
+                        tolerance: results.tolerance,
+                        minRequired: minRequired,
+                        meetsRequirement: results.tolerance >= minRequired,
+                        items: scaleItems,
+                        totalWeight: scaleWeights.reduce((a, b) => a + b, 0)
+                    });
+                }
+
+                const optimizationInfo = this.currentOptimizationResult ? `
+OPTIMIZATION RESULTS:
+Algorithm: ${this.currentOptimizationResult.algorithm}
+Evaluations: ${this.currentOptimizationResult.evaluations.toLocaleString()}
+Time: ${(this.currentOptimizationResult.timeMs / 1000).toFixed(1)} seconds
+${this.currentOptimizationResult.generations > 0 ? `Generations: ${this.currentOptimizationResult.generations}` : ''}
+` : '';
+
+                const report = `ENHANCED PRODUCTION LINE TOLERANCE OPTIMIZATION REPORT
+=====================================================
+Project: ${this.projectName}
+Generated: ${new Date().toLocaleString()}
+
+CONFIGURATION:
+Number of Scales: ${this.numScales}
+Total Items: ${this.items.length}
+Locked Items: ${this.lockedItems.size}
+Max Items Limit: ${this.maxItems}
+${optimizationInfo}
+SCALE PERFORMANCE SUMMARY:
+${scaleDetails.map(scale => 
+    `Scale ${scale.scale}: ${scale.tolerance.toFixed(2)} tolerance (${scale.itemCount} items, ${scale.totalWeight.toFixed(2)}g total)${scale.minRequired > 0 ? ` - Min Req: ${scale.minRequired.toFixed(2)} ${scale.meetsRequirement ? '[MET]' : '[NOT MET]'}` : ''}`
+).join('\n')}
+
+Total Combined Tolerance: ${totalTolerance.toFixed(2)}
+
+DETAILED SCALE ASSIGNMENTS:
+${scaleDetails.map(scale => 
+    `\nScale ${scale.scale} (Tolerance: ${scale.tolerance.toFixed(3)}, Total Weight: ${scale.totalWeight.toFixed(2)}g):\n${scale.items.length > 0 ? 
+        scale.items.map(item => {
+            const lockStatus = this.lockedItems.has(this.items.indexOf(item)) ? ' [LOCKED]' : '';
+            return `  • ${item.name}: ${item.weight}g${lockStatus}`;
+        }).join('\n') : 
+        '  • No items assigned'
+    }`
+).join('\n')}
+
+COMPLETE ITEM LIST:
+${this.items.map((item, index) => {
+    let assignedScale = 'Unassigned';
+    for (let i = 1; i <= this.numScales; i++) {
+        if (item[`scale${i}`]) {
+            assignedScale = `Scale ${i}`;
+            break;
+        }
+    }
+    const lockStatus = this.lockedItems.has(index) ? ' [LOCKED]' : '';
+    return `${item.name}: ${item.weight}g → ${assignedScale}${lockStatus}`;
+}).join('\n')}
+`;
+                
+                const filename = `${this.projectName}_enhanced_tolerance_report.txt`;
+                this.downloadFile(report, filename, 'text/plain');
+                this.showMessage("Enhanced detailed report exported successfully", "result");
+            }
+
+            downloadFile(content, filename, mimeType) {
+                const blob = new Blob([content], { type: mimeType + ';charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+
+            showMessage(message, type) {
+                // Create a temporary message container if it doesn't exist
+                let messageContainer = document.getElementById('tempMessageContainer');
+                if (!messageContainer) {
+                    messageContainer = document.createElement('div');
+                    messageContainer.id = 'tempMessageContainer';
+                    messageContainer.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        z-index: 1000;
+                        max-width: 400px;
+                    `;
+                    document.body.appendChild(messageContainer);
+                }
+                
+                const className = type === "warning" ? 'warning' : type === "error" ? 'error' : type === "info" ? 'info' : 'result';
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = className;
+                messageDiv.style.cssText = `
+                    margin-bottom: 10px;
+                    padding: 15px;
+                    border-radius: 5px;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    animation: slideIn 0.3s ease-out;
+                `;
+                messageDiv.innerHTML = message;
+                
+                // Add animation styles if not already present
+                if (!document.getElementById('messageAnimations')) {
+                    const style = document.createElement('style');
+                    style.id = 'messageAnimations';
+                    style.textContent = `
+                        @keyframes slideIn {
+                            from { transform: translateX(100%); opacity: 0; }
+                            to { transform: translateX(0); opacity: 1; }
+                        }
+                        @keyframes slideOut {
+                            from { transform: translateX(0); opacity: 1; }
+                            to { transform: translateX(100%); opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+                
+                messageContainer.appendChild(messageDiv);
+                
+                // Auto-remove after delay (except for errors)
+                if (type !== "error") {
+                    setTimeout(() => {
+                        messageDiv.style.animation = 'slideOut 0.3s ease-in';
+                        setTimeout(() => {
+                            if (messageDiv.parentNode) {
+                                messageDiv.parentNode.removeChild(messageDiv);
+                            }
+                        }, 300);
+                    }, 4000);
+                }
+            }
+        }
+
+        let optimizer;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM loaded, initializing enhanced optimizer...");
+            try {
+                optimizer = new EnhancedToleranceOptimizer();
+                optimizer.initializeApp();
+                window.optimizer = optimizer;
+                console.log("Enhanced optimizer ready!");
+            } catch (error) {
+                console.error("Failed to initialize:", error);
+                alert("Application failed to start: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
